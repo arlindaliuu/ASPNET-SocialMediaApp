@@ -14,5 +14,6 @@ namespace SocialMediaApp.Configuration
         public DbSet<Posts> Posts { get; set; }
         public DbSet<Followings> Followings { get; set; }
         public DbSet<Likes> Likes { get; set; }
+        public DbSet<Comments> Comments { get; set; }
     }
 }

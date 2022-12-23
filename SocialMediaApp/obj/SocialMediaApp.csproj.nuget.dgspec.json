@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Asus\\Documents\\GitHub\\ASPNET-SocialMediaApp\\SocialMediaApp\\SocialMediaApp.csproj": {}
+    "C:\\Users\\THIS\\OneDrive\\Desktop\\ASPNET-SocialMediaApp\\SocialMediaApp\\SocialMediaApp.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Asus\\Documents\\GitHub\\ASPNET-SocialMediaApp\\SocialMediaApp\\SocialMediaApp.csproj": {
+    "C:\\Users\\THIS\\OneDrive\\Desktop\\ASPNET-SocialMediaApp\\SocialMediaApp\\SocialMediaApp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Asus\\Documents\\GitHub\\ASPNET-SocialMediaApp\\SocialMediaApp\\SocialMediaApp.csproj",
+        "projectUniqueName": "C:\\Users\\THIS\\OneDrive\\Desktop\\ASPNET-SocialMediaApp\\SocialMediaApp\\SocialMediaApp.csproj",
         "projectName": "SocialMediaApp",
-        "projectPath": "C:\\Users\\Asus\\Documents\\GitHub\\ASPNET-SocialMediaApp\\SocialMediaApp\\SocialMediaApp.csproj",
-        "packagesPath": "C:\\Users\\Asus\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Asus\\Documents\\GitHub\\ASPNET-SocialMediaApp\\SocialMediaApp\\obj\\",
+        "projectPath": "C:\\Users\\THIS\\OneDrive\\Desktop\\ASPNET-SocialMediaApp\\SocialMediaApp\\SocialMediaApp.csproj",
+        "packagesPath": "C:\\Users\\THIS\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\THIS\\OneDrive\\Desktop\\ASPNET-SocialMediaApp\\SocialMediaApp\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Asus\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\THIS\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -75,7 +75,8 @@
             "net47",
             "net471",
             "net472",
-            "net48"
+            "net48",
+            "net481"
           ],
           "assetTargetFallback": true,
           "warn": true,
@@ -87,7 +88,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.202\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.100\\RuntimeIdentifierGraph.json"
         }
       }
     }
