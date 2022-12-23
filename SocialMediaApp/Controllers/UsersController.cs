@@ -59,7 +59,7 @@ namespace SocialMediaApp.Controllers
             if (ModelState.IsValid)
             {
                 
-
+                
                 var newUser = new User();
                 newUser.Id = user.Id;
                 newUser.email = user.email;
