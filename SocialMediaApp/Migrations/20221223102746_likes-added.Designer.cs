@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SocialMediaApp.Configuration;
 
@@ -11,9 +12,10 @@ using SocialMediaApp.Configuration;
 namespace SocialMediaApp.Migrations
 {
     [DbContext(typeof(SocialNetworkDbContext))]
-    partial class SocialNetworkDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221223102746_likes-added")]
+    partial class likesadded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -35,39 +37,6 @@ namespace SocialMediaApp.Migrations
                     b.HasIndex("followingsfollowingId");
 
                     b.ToTable("FollowingsUser");
-                });
-
-            modelBuilder.Entity("SocialMediaApp.Models.Comments", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int?>("PostsId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("context")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("date_created")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("date_updated")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("userId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PostsId");
-
-                    b.HasIndex("userId");
-
-                    b.ToTable("Comments");
                 });
 
             modelBuilder.Entity("SocialMediaApp.Models.Followings", b =>
@@ -239,21 +208,6 @@ namespace SocialMediaApp.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("SocialMediaApp.Models.Comments", b =>
-                {
-                    b.HasOne("SocialMediaApp.Models.Posts", null)
-                        .WithMany("comments")
-                        .HasForeignKey("PostsId");
-
-                    b.HasOne("SocialMediaApp.Models.User", "user")
-                        .WithMany()
-                        .HasForeignKey("userId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("user");
-                });
-
             modelBuilder.Entity("SocialMediaApp.Models.Likes", b =>
                 {
                     b.HasOne("SocialMediaApp.Models.Posts", null)
@@ -282,8 +236,6 @@ namespace SocialMediaApp.Migrations
 
             modelBuilder.Entity("SocialMediaApp.Models.Posts", b =>
                 {
-                    b.Navigation("comments");
-
                     b.Navigation("likes");
                 });
 #pragma warning restore 612, 618

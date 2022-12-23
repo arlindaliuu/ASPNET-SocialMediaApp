@@ -1,4 +1,4 @@
-﻿@model SocialMediaApp.Models.Posts
+﻿@model SocialMediaApp.ViewModels.PostUserViewModel;
 
 @{
     ViewData["Title"] = "Create";
@@ -10,7 +10,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="Create" >
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="caption" class="control-label"></label>
@@ -33,6 +33,11 @@
                 <span asp-validation-for="post_url" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="ImageFile" class="control-label"></label>
+                <input asp-for="ImageFile" accept="image/*" class="form-control" />
+                <span asp-validation-for="ImageFile" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="date_created" class="control-label"></label>
                 <input asp-for="date_created" class="form-control" />
                 <span asp-validation-for="date_created" class="text-danger"></span>
@@ -41,6 +46,16 @@
                 <label asp-for="date_update" class="control-label"></label>
                 <input asp-for="date_update" class="form-control" />
                 <span asp-validation-for="date_update" class="text-danger"></span>
+            </div>
+            
+            <div class="form-group">
+                <label class="control-label"></label>
+                <select asp-for="UserId" class="form-select form-control">
+                    @foreach (User user in Model.Users)
+                    {
+                        <option value="@user.Id">@user.first_name @user.last_name</option>
+                    }
+                </select>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />

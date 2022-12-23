@@ -5,18 +5,23 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
 using SocialMediaApp.Configuration;
 using SocialMediaApp.Models;
+using SocialMediaApp.ViewModels;
 
 namespace SocialMediaApp.Controllers
 {
     public class PostsController : Controller
     {
         private readonly SocialNetworkDbContext _context;
+        private readonly IWebHostEnvironment _hostEnvironment;
 
-        public PostsController(SocialNetworkDbContext context)
+        public PostsController(SocialNetworkDbContext context, IWebHostEnvironment hostEnvironment)
         {
+
             _context = context;
+            this._hostEnvironment = hostEnvironment;
         }
 
         // GET: Posts
@@ -46,7 +51,10 @@ namespace SocialMediaApp.Controllers
         // GET: Posts/Create
         public IActionResult Create()
         {
-            return View();
+            List<User> users = this._context.Users.ToList();
+            PostUserViewModel model = new PostUserViewModel();
+            model.Users = users;
+            return View(model);
         }
 
         // POST: Posts/Create
@@ -54,15 +62,40 @@ namespace SocialMediaApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,caption,latitude,longtitude,post_url,date_created,date_update")] Posts posts)
+        public async Task<IActionResult> Create(PostUserViewModel posts)
         {
-            if (ModelState.IsValid)
-            {
-                _context.Add(posts);
+          
+                var student = this._context.Users.Find(posts.UserId);
+                var newPost = new Posts();
+
+                newPost.caption = posts.caption;
+                newPost.latitude = posts.latitude;
+                newPost.longtitude = posts.longtitude;
+                newPost.post_url = posts.post_url;
+                newPost.ImageFile = posts.ImageFile;
+                newPost.date_created = posts.date_created;
+                newPost.date_update = posts.date_update;
+                newPost.User = student; 
+            
+                this._context.Posts.Add(newPost);
+                this._context.SaveChanges();
+
+                //Save image to wwwrot/image
+  /*              string wwwRootPath = _hostEnvironment.WebRootPath;
+                string filename = Path.GetFileNameWithoutExtension(posts.ImageFile.FileName);
+                string extension = Path.GetExtension(posts.ImageFile.FileName);
+                filename = filename + DateTime.Now.ToString("ttmmssfff") + extension;
+                string path = Path.Combine(wwwRootPath +"/Image/", filename);
+                using(var fileStream = new FileStream(path, FileMode.Create))
+                {
+                    await posts.ImageFile.CopyToAsync(fileStream);
+                }*/
+                //Insert record
+        /*        _context.Add(newPost);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
-            }
-            return View(posts);
+            */
+            return View();
         }
 
         // GET: Posts/Edit/5

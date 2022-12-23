@@ -15,6 +15,26 @@ build_property.GenerateRazorMetadataSourceChecksumAttributes =
 build_property.MSBuildProjectDirectory = C:\Users\arlin\Desktop\Semestri 5\Hyrje ne Ueb Programim\Social Netwrok APp\.vs\SocialMediaApp\SocialMediaApp
 build_property._RazorSourceGeneratorDebug = 
 
+[C:/Users/arlin/Desktop/Semestri 5/Hyrje ne Ueb Programim/Social Netwrok APp/.vs/SocialMediaApp/SocialMediaApp/Views/Comments/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29tbWVudHNcQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/arlin/Desktop/Semestri 5/Hyrje ne Ueb Programim/Social Netwrok APp/.vs/SocialMediaApp/SocialMediaApp/Views/Comments/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29tbWVudHNcRGVsZXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/arlin/Desktop/Semestri 5/Hyrje ne Ueb Programim/Social Netwrok APp/.vs/SocialMediaApp/SocialMediaApp/Views/Comments/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29tbWVudHNcRGV0YWlscy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/arlin/Desktop/Semestri 5/Hyrje ne Ueb Programim/Social Netwrok APp/.vs/SocialMediaApp/SocialMediaApp/Views/Comments/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29tbWVudHNcRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/arlin/Desktop/Semestri 5/Hyrje ne Ueb Programim/Social Netwrok APp/.vs/SocialMediaApp/SocialMediaApp/Views/Comments/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ29tbWVudHNcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/arlin/Desktop/Semestri 5/Hyrje ne Ueb Programim/Social Netwrok APp/.vs/SocialMediaApp/SocialMediaApp/Views/Followings/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRm9sbG93aW5nc1xDcmVhdGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
@@ -41,6 +61,26 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/arlin/Desktop/Semestri 5/Hyrje ne Ueb Programim/Social Netwrok APp/.vs/SocialMediaApp/SocialMediaApp/Views/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/arlin/Desktop/Semestri 5/Hyrje ne Ueb Programim/Social Netwrok APp/.vs/SocialMediaApp/SocialMediaApp/Views/Likes/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGlrZXNcQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/arlin/Desktop/Semestri 5/Hyrje ne Ueb Programim/Social Netwrok APp/.vs/SocialMediaApp/SocialMediaApp/Views/Likes/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGlrZXNcRGVsZXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/arlin/Desktop/Semestri 5/Hyrje ne Ueb Programim/Social Netwrok APp/.vs/SocialMediaApp/SocialMediaApp/Views/Likes/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGlrZXNcRGV0YWlscy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/arlin/Desktop/Semestri 5/Hyrje ne Ueb Programim/Social Netwrok APp/.vs/SocialMediaApp/SocialMediaApp/Views/Likes/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGlrZXNcRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/arlin/Desktop/Semestri 5/Hyrje ne Ueb Programim/Social Netwrok APp/.vs/SocialMediaApp/SocialMediaApp/Views/Likes/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGlrZXNcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/arlin/Desktop/Semestri 5/Hyrje ne Ueb Programim/Social Netwrok APp/.vs/SocialMediaApp/SocialMediaApp/Views/Posts/Create.cshtml]
