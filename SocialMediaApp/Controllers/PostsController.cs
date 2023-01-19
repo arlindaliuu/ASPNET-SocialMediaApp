@@ -51,10 +51,7 @@ namespace SocialMediaApp.Controllers
         // GET: Posts/Create
         public IActionResult Create()
         {
-            List<User> users = this._context.Users.ToList();
-            PostUserViewModel model = new PostUserViewModel();
-            model.Users = users;
-            return View(model);
+            return View();
         }
 
         // POST: Posts/Create
@@ -75,7 +72,6 @@ namespace SocialMediaApp.Controllers
                 newPost.ImageFile = posts.ImageFile;
                 newPost.date_created = posts.date_created;
                 newPost.date_update = posts.date_update;
-                newPost.User = student; 
             
                 this._context.Posts.Add(newPost);
                 this._context.SaveChanges();

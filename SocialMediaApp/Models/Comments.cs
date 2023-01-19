@@ -6,6 +6,9 @@
         public string context { get; set; }
         public DateTime date_created { get; set; } = DateTime.Now;  
         public DateTime date_updated { get; set; }
-        public User user { get; set; }
+        //public int duplicateId { get; set; }
+
+                public User user { get; set; }
+        
     }
 }

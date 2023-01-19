@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -13,10 +14,17 @@ namespace SocialMediaApp.Controllers
     public class UsersController : Controller
     {
         private readonly SocialNetworkDbContext _context;
+        private UserManager<User> _userManager { get; set; }
+        private SignInManager<User> _signInManager { get; set; }
+        private RoleManager<User> _roleManager { get; set; }
 
-        public UsersController(SocialNetworkDbContext context)
+
+        public UsersController(SocialNetworkDbContext context, SignInManager<User> signInManager, UserManager<User> _userManager, RoleManager<User> roleManager)
         {
             _context = context;
+            _signInManager = signInManager;
+            this._userManager = _userManager;
+            _roleManager = roleManager;
         }
 
         // GET: Users
@@ -26,7 +34,7 @@ namespace SocialMediaApp.Controllers
         }
 
         // GET: Users/Details/5
-        public async Task<IActionResult> Details(int? id)
+/*        public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Users == null)
             {
@@ -42,7 +50,7 @@ namespace SocialMediaApp.Controllers
 
             return View(user);
         }
-
+*/
         // GET: Users/Create
         public IActionResult Create()
         {
@@ -54,17 +62,13 @@ namespace SocialMediaApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,email,username,password,first_name,last_name,role,gender,city,state,country,profile_picture_url,birth_date,date_created,date_updated,active,activation_key")] UserViewModel user)
+        public async Task<IActionResult> Create([Bind("Id,password,first_name,last_name,role,gender,city,state,country,profile_picture_url,birth_date,date_created,date_updated,active,activation_key")] UserViewModel user)
         {
             if (ModelState.IsValid)
             {
                 
 
                 var newUser = new User();
-                newUser.Id = user.Id;
-                newUser.email = user.email;
-                newUser.username = user.username;
-                newUser.password = user.password;
                 newUser.first_name = user.first_name;
                 newUser.last_name = user.last_name;
                 newUser.role = user.role;
@@ -106,38 +110,22 @@ namespace SocialMediaApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,email,username,password,first_name,last_name,role,gender,city,state,country,profile_picture_url,birth_date,date_created,date_updated,active,activation_key")] User user)
+        public async Task<IActionResult> Edit(int id, [Bind("password,first_name,last_name,role,gender,city,state,country,profile_picture_url,birth_date,date_created,date_updated,active,activation_key")] User user)
         {
-            if (id != user.Id)
+            if (string.IsNullOrEmpty(user.first_name) && user.last_name == "")
             {
-                return NotFound();
+                //error
             }
 
             if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(user);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!UserExists(user.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+            {//dotnet way
+
             }
-            return View(user);
+            return View();
         }
 
         // GET: Users/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+/*        public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Users == null)
             {
@@ -153,7 +141,7 @@ namespace SocialMediaApp.Controllers
 
             return View(user);
         }
-
+*/
         // POST: Users/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
@@ -173,7 +161,7 @@ namespace SocialMediaApp.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool UserExists(int id)
+        private bool UserExists(string id)
         {
           return _context.Users.Any(e => e.Id == id);
         }

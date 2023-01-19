@@ -15,7 +15,7 @@ namespace SocialMediaApp.Models
         [NotMapped]
         [DisplayName("Upload File")]
         public IFormFile ImageFile { get; set; }   
-        [ForeignKey("user_id")]
+        //[ForeignKey("user_id")]
         public User User { get; set; }
         public List<Likes> likes { get; set; }
         public List<Comments> comments { get; set; }
