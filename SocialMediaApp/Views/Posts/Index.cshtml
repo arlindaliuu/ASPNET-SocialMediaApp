@@ -2,10 +2,28 @@
 
 @{
     ViewData["Title"] = "Index";
+
+    Pager pager = new Pager();
+
+    int pageNo = 0;
+    if(ViewBag.Pager != null)
+    {
+        pager = ViewBag.Pager;
+        pageNo = pager.CurrentPage;
+    }
 }
 
 <h1>Index</h1>
+<form asp-action="Index" method="get">
+    <div>
+        <p>
+            Find Post <input type = "text" name="searchString" value="" />
+            <input type="submit" value="Search" class="btn btn-info"s />
+            <a asp-action="Index">Remove Filter</a>
+        </p>
+    </div>
 
+</form>
 <p>
     <a asp-action="Create">Create New</a>
 </p>
@@ -19,7 +37,7 @@
                 @Html.DisplayNameFor(model => model.latitude)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.longtitude)
+               <a asp-action="Index" asp-route-sortOrder="@ViewBag.PriceSortParam">@Html.DisplayNameFor(model => model.longtitude)</a> 
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.post_url)
@@ -69,3 +87,14 @@
 }
     </tbody>
 </table>
+<div class="container">
+    @if(pager.TotalPages > 0){
+        <ul class="pagination justify-content-end">
+            @for(var pge = pager.StartPage; pge<=pager.EndPage;pge++){
+                <li class="page-item @(pge == pager.CurrentPage ? "active" : "")">
+                    <a class="page-link" asp-controller="Posts" asp-action="Index" asp-route-pg="@pge">@pge</a>
+                </li>
+            }
+        </ul>
+    }
+</div>

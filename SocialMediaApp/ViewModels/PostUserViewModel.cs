@@ -7,7 +7,7 @@ namespace SocialMediaApp.ViewModels
     public class PostUserViewModel
     {
         public int? Id { get; set; }
-        public int? UserId { get; set; }
+        public string? UserId { get; set; }
         public string caption { get; set; }
         public float latitude { get; set; }
         public float longtitude { get; set; }

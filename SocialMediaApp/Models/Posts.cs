@@ -14,11 +14,11 @@ namespace SocialMediaApp.Models
         public DateTime date_update { get; set; }
         [NotMapped]
         [DisplayName("Upload File")]
-        public IFormFile ImageFile { get; set; }   
+        public IFormFile? ImageFile { get; set; }   
         //[ForeignKey("user_id")]
-        public User User { get; set; }
-        public List<Likes> likes { get; set; }
-        public List<Comments> comments { get; set; }
+        public User? User { get; set; }
+        public List<Likes>? likes { get; set; }
+        public List<Comments>? comments { get; set; }
 
     }
     public class PostsViewModel

@@ -1,15 +1,20 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using SocialMediaApp.Configuration;
 using SocialMediaApp.Models;
 using System.Diagnostics;
 
 namespace SocialMediaApp.Controllers
 {
+    
     public class HomeController : Controller
     {
+        private SocialNetworkDbContext _application;    
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(SocialNetworkDbContext application,ILogger<HomeController> logger)
         {
+            _application = application;
             _logger = logger;
         }
 
@@ -20,7 +25,7 @@ namespace SocialMediaApp.Controllers
 
         public IActionResult Privacy()
         {
-            return View();
+            return View(_application.Users.ToList());
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

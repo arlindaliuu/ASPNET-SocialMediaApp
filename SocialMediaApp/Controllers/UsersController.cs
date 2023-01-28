@@ -19,22 +19,22 @@ namespace SocialMediaApp.Controllers
         private RoleManager<User> _roleManager { get; set; }
 
 
-        public UsersController(SocialNetworkDbContext context, SignInManager<User> signInManager, UserManager<User> _userManager, RoleManager<User> roleManager)
+        public UsersController(SocialNetworkDbContext context, SignInManager<User> signInManager, UserManager<User> _userManager)
         {
             _context = context;
             _signInManager = signInManager;
             this._userManager = _userManager;
-            _roleManager = roleManager;
         }
 
         // GET: Users
         public async Task<IActionResult> Index()
         {
-              return View(await _context.Users.ToListAsync());
+            var users = _userManager.Users.ToList();
+            return Json(users);
         }
 
         // GET: Users/Details/5
-/*        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(string id)
         {
             if (id == null || _context.Users == null)
             {
@@ -50,7 +50,7 @@ namespace SocialMediaApp.Controllers
 
             return View(user);
         }
-*/
+
         // GET: Users/Create
         public IActionResult Create()
         {
@@ -90,7 +90,7 @@ namespace SocialMediaApp.Controllers
         }
 
         // GET: Users/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(string id)
         {
             if (id == null || _context.Users == null)
             {
@@ -110,22 +110,41 @@ namespace SocialMediaApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("password,first_name,last_name,role,gender,city,state,country,profile_picture_url,birth_date,date_created,date_updated,active,activation_key")] User user)
+        public async Task<IActionResult> Edit(string id, User user)
         {
             if (string.IsNullOrEmpty(user.first_name) && user.last_name == "")
             {
                 //error
             }
+            
 
-            if (ModelState.IsValid)
-            {//dotnet way
+            var userToFind = await _context.Users
+                .FirstOrDefaultAsync(m => m.Id == id);
+            
+            userToFind.activation_key = user.activation_key;
+            userToFind.active = user.active;
+            userToFind.city = user.city;
+            userToFind.country = user.country;
+            userToFind.date_updated = DateTime.Now;
+            userToFind.birth_date = user.birth_date;
+            userToFind.Email = user.Email;
+            userToFind.first_name = user.first_name;
+            userToFind.last_name = user.last_name;
+            userToFind.gender = user.gender;
+            userToFind.role = user.role;
+            userToFind.UserName = user.UserName;
+            userToFind.state = user.state;
+            userToFind.profile_picture_url = user.profile_picture_url;
 
-            }
+
+            
+            await _context.SaveChangesAsync();
+
             return View();
         }
 
         // GET: Users/Delete/5
-/*        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(string id)
         {
             if (id == null || _context.Users == null)
             {
@@ -141,11 +160,11 @@ namespace SocialMediaApp.Controllers
 
             return View(user);
         }
-*/
+
         // POST: Users/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(string id)
         {
             if (_context.Users == null)
             {

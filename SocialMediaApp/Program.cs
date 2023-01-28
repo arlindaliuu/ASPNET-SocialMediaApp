@@ -5,10 +5,21 @@ using SocialMediaApp.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+
 builder.Services.AddDbContext<SocialNetworkDbContext>(options =>
 options.UseSqlServer(connectionString));
-
-builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true)
+//Enabling cors
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(
+                      policy =>
+                      {
+                          policy.WithOrigins("*").AllowAnyHeader().AllowAnyMethod();
+                      });
+});
+//
+builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = false).AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<SocialNetworkDbContext>();
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -28,7 +39,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 app.UseAuthentication();;
-
+app.UseCors();
 app.UseAuthorization();
 app.MapRazorPages();
 app.MapControllerRoute(

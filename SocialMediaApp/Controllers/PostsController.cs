@@ -25,10 +25,41 @@ namespace SocialMediaApp.Controllers
         }
 
         // GET: Posts
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString,string sortOrder,int pg=1)
         {
-              return View(await _context.Posts.ToListAsync());
-        }
+            ViewBag.PriceSortParam = String.IsNullOrEmpty(sortOrder) ? "longtitude_desc" : "";
+            List<Posts> posts = _context.Posts.ToList();
+
+            var Posts = from b in _context.Posts.Include(m => m.Id).Include(m => m.caption)
+                        select b;
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                Posts = Posts.Where(b => b.caption.Contains(searchString));
+            }
+            switch (sortOrder)
+            {
+                case "price_desc":
+                    Posts = Posts.OrderByDescending(b => b.longtitude);
+                    break;
+                default:
+                    Posts = Posts.OrderBy(b => b.longtitude);
+                    break;
+            }
+            const int pageSize = 3;
+            if (pg < 1)
+                pg = 1;
+
+            int rescCount = posts.Count();
+
+            var pager = new Pager(rescCount, pg, pageSize);
+            int recSkip = (pg - 1) * pageSize;
+
+            var data = posts.Skip(recSkip).Take(pager.PageSize).ToList();
+            this.ViewBag.Pager = pager;
+
+            return View(data);
+/*              return View(await _context.Posts.ToListAsync());
+*/        }
 
         // GET: Posts/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -51,7 +82,11 @@ namespace SocialMediaApp.Controllers
         // GET: Posts/Create
         public IActionResult Create()
         {
-            return View();
+            List<User> users = this._context.Users.ToList();
+            PostUserViewModel model = new PostUserViewModel();
+            model.Users = users;
+            return View(model);
+            
         }
 
         // POST: Posts/Create
@@ -72,26 +107,27 @@ namespace SocialMediaApp.Controllers
                 newPost.ImageFile = posts.ImageFile;
                 newPost.date_created = posts.date_created;
                 newPost.date_update = posts.date_update;
+                newPost.User = student;
             
                 this._context.Posts.Add(newPost);
                 this._context.SaveChanges();
 
-                //Save image to wwwrot/image
-  /*              string wwwRootPath = _hostEnvironment.WebRootPath;
-                string filename = Path.GetFileNameWithoutExtension(posts.ImageFile.FileName);
-                string extension = Path.GetExtension(posts.ImageFile.FileName);
-                filename = filename + DateTime.Now.ToString("ttmmssfff") + extension;
-                string path = Path.Combine(wwwRootPath +"/Image/", filename);
-                using(var fileStream = new FileStream(path, FileMode.Create))
-                {
-                    await posts.ImageFile.CopyToAsync(fileStream);
-                }*/
-                //Insert record
-        /*        _context.Add(newPost);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            */
-            return View();
+            //Save image to wwwrot/image
+            /*              string wwwRootPath = _hostEnvironment.WebRootPath;
+                          string filename = Path.GetFileNameWithoutExtension(posts.ImageFile.FileName);
+                          string extension = Path.GetExtension(posts.ImageFile.FileName);
+                          filename = filename + DateTime.Now.ToString("ttmmssfff") + extension;
+                          string path = Path.Combine(wwwRootPath +"/Image/", filename);
+                          using(var fileStream = new FileStream(path, FileMode.Create))
+                          {
+                              await posts.ImageFile.CopyToAsync(fileStream);
+                          }*/
+            //Insert record
+            /*        _context.Add(newPost);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                */
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Posts/Edit/5

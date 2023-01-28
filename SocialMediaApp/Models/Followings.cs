@@ -12,7 +12,7 @@ namespace SocialMediaApp.Models
         //public int duplicateId { get; set; }
 
 
-        public List<User> Users { get; set; }
+        public List<User>? Users { get; set; }
 
     }
 }
