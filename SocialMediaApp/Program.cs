@@ -5,7 +5,6 @@ using SocialMediaApp.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 
 builder.Services.AddDbContext<SocialNetworkDbContext>(options =>
 options.UseSqlServer(connectionString));
@@ -18,6 +17,10 @@ builder.Services.AddCors(options =>
                           policy.WithOrigins("*").AllowAnyHeader().AllowAnyMethod();
                       });
 });
+//JWT Token 
+builder.Services.Configure<AppSettings>
+    (builder.Configuration.GetSection("AppSettings"));
+builder.Services.AddScoped<IAuthentication, Authentication>();
 //
 builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = false).AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<SocialNetworkDbContext>();

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -25,6 +26,7 @@ namespace SocialMediaApp.Controllers
         }
 
         // GET: Posts
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index(string searchString,string sortOrder,int pg=1)
         {
             ViewBag.PriceSortParam = String.IsNullOrEmpty(sortOrder) ? "longtitude_desc" : "";
@@ -80,6 +82,7 @@ namespace SocialMediaApp.Controllers
         }
 
         // GET: Posts/Create
+        [Authorize(Roles = "admin")]
         public IActionResult Create()
         {
             List<User> users = this._context.Users.ToList();

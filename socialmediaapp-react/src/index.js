@@ -8,7 +8,10 @@ import {Home} from './views/Home'
 import {About} from './views/About'
 import { Footer } from './components/Footer';
 import { Header } from './components/Header';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import { Login } from './views/Login';
+import 'react-toastify/dist/ReactToastify.css';
+import Register from './views/Register';
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -16,10 +19,11 @@ root.render(
   <Header />
   <Routes>
     
-    <Route path={'/'} element={<Home message="props posts"/>} />
-    <Route path={'/login'} element={<App />}/>
+    <Route path={'/'} element={<Home />} />
+    <Route path={'/app'} element={<App />}/>
     <Route path='/about' element={<About />}/>
-    <Route />
+    <Route path='/login' element={<Login />}/>
+    <Route path='/register' element={<Register />}/>
 
   </Routes>
   <Footer />

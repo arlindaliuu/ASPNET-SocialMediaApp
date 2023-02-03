@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SocialMediaApp.Configuration;
 using SocialMediaApp.Models;
+using System.Security.Claims;
 
 namespace SocialMediaApp.Controllers
 {
@@ -30,8 +31,9 @@ namespace SocialMediaApp.Controllers
         public async Task<IActionResult> Index()
         {
             var users = _userManager.Users.ToList();
-            return Json(users);
+            return View(users);
         }
+
 
         // GET: Users/Details/5
         public async Task<IActionResult> Details(string id)
@@ -54,7 +56,7 @@ namespace SocialMediaApp.Controllers
         // GET: Users/Create
         public IActionResult Create()
         {
-            return View();
+            return Redirect("/Identity/Account/Register");
         }
 
         // POST: Users/Create
@@ -71,7 +73,7 @@ namespace SocialMediaApp.Controllers
                 var newUser = new User();
                 newUser.first_name = user.first_name;
                 newUser.last_name = user.last_name;
-                newUser.role = user.role;
+                /*newUser.role = user.role;*/
                 newUser.gender = user.gender;
                 newUser.city = user.city;
                 newUser.state = user.state;
@@ -131,7 +133,7 @@ namespace SocialMediaApp.Controllers
             userToFind.first_name = user.first_name;
             userToFind.last_name = user.last_name;
             userToFind.gender = user.gender;
-            userToFind.role = user.role;
+            /*userToFind.role = user.role;*/
             userToFind.UserName = user.UserName;
             userToFind.state = user.state;
             userToFind.profile_picture_url = user.profile_picture_url;

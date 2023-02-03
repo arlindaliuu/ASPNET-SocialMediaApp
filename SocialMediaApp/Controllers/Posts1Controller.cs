@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SocialMediaApp.Configuration;
 using SocialMediaApp.Models;
+using SocialMediaApp.ViewModels;
 
 namespace SocialMediaApp.Controllers
 {
@@ -24,13 +26,15 @@ namespace SocialMediaApp.Controllers
         }
 
         // GET: api/Posts1
+        
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Posts>>> GetPosts()
         {
-            return await _context.Posts.ToListAsync();
+            return await _context.Posts.Include(post => post.User).ToListAsync();
         }
 
         // GET: api/Posts1/5
+        
         [HttpGet("{id}")]
         public async Task<ActionResult<Posts>> GetPosts(int id)
         {

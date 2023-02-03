@@ -150,7 +150,7 @@ namespace SocialMediaApp.Areas.Identity.Pages.Account
                 var user = CreateUser();
                 user.first_name = Input.FistName;
                 user.last_name = Input.LastName;
-                user.role = Input.Role;
+                
                 user.gender = Input.Gender;
                 user.city = Input.City;
                 user.state = Input.State;
