@@ -5,6 +5,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
 import { Footer } from '../components/Footer';
 import loginPhoto from '../assets/images/loginphoto.png'
+import { Header } from "../components/Header";
+import Nav from 'react-bootstrap/Nav';
 
 export const Login = () =>{
     // const[email, setEmail] = useState('');
@@ -43,6 +45,7 @@ export const Login = () =>{
             })
     }
     return <>
+    <Header />
     <Container  className="m-auto mt-5">
     <ToastContainer />
     <div  className=" border row m-auto p-5">
@@ -60,11 +63,13 @@ export const Login = () =>{
         <FormGroup className="w-75 m-auto">
             <FormLabel className="mt-3 " >Password</FormLabel>
             <FormControl type="password" name="password" onChange={handleSubmit}/>
+            <p className="d-flex">Not registered yet? Feel free to &nbsp;<Nav.Link as={Link} className="text-primary" to="/register"> register here.</Nav.Link></p>
         </FormGroup>
 
         <FormGroup>
             <FormControl style={{color: '#339D40'}} className="w-50 m-auto mt-5" type="submit" name="submit"  />
         </FormGroup>
+        
     </Form>
         </div>
       

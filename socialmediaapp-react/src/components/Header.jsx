@@ -31,11 +31,12 @@ const handleLogout = () =>{
         <Navbar.Toggle aria-controls="navbarScroll" />
         <Navbar.Collapse id="navbarScroll">
           <Nav
-            className="d-flex justify-content-between my-2 my-lg-0 w-100"
+            className={"d-flex my-2 my-lg-0 w-100 " +(authenticated ? 'justify-content-between': 'justify-content-end')}
             style={{ maxHeight: '100px'}}
             navbarScroll
           >
-        <Form className="d-flex">
+            {authenticated && <> 
+              <Form className="d-flex">
             <Form.Control
               type="search"
               placeholder="Search"
@@ -44,18 +45,22 @@ const handleLogout = () =>{
             />
             <Button variant="outline-success">Search</Button>
           </Form>
-          <div style={{width: '500px'}} className="d-flex justify-content-between">
-          <Nav.Link><FontAwesomeIcon icon={faHome} /></Nav.Link>
-
-          <NavDropdown align="end" title={<> <FontAwesomeIcon icon={faBell} /><span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-secondary">+99 <span className="visually-hidden">unread messages</span></span> </>} >
-            <NavDropdown.Item href="#">Notification 1</NavDropdown.Item>
-          </NavDropdown>
-          <NavDropdown align="end" title={<FontAwesomeIcon icon={faEnvelope} />} >
-            <NavDropdown.Item href="#">Message 1</NavDropdown.Item>
+            </>}
+        
+          <div style={{width: '500px'}} className={"d-flex " + (authenticated ? 'justify-content-between' : 'justify-content-end')}>
+            {authenticated && <> 
+              <Nav.Link><FontAwesomeIcon icon={faHome} /></Nav.Link>
+            <NavDropdown align="end" title={<> <FontAwesomeIcon icon={faBell} /><span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-secondary">+99 <span className="visually-hidden">unread messages</span></span> </>} >
+              <NavDropdown.Item href="#">Notification 1</NavDropdown.Item>
             </NavDropdown>
-          
+            <NavDropdown align="end" title={<FontAwesomeIcon icon={faEnvelope} />} >
+              <NavDropdown.Item href="#">Message 1</NavDropdown.Item>
+            </NavDropdown>
 
-          <Nav.Link as={Link} to="/">Welcome, {props.name}</Nav.Link>
+            </>}
+
+
+          <Nav.Link as={Link} to="/">{authenticated && <>Welcome, {props.name}</>}</Nav.Link>
           {!authenticated && <> <Nav.Link as={Link} to="/login">Login</Nav.Link>
           
 

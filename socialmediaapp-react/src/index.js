@@ -9,6 +9,7 @@ import {About} from './views/About'
 import { Login } from './views/Login';
 import 'react-toastify/dist/ReactToastify.css';
 import Register from './views/Register';
+import { Dashboard } from './views/Dashboard';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -20,6 +21,7 @@ root.render(
     <Route path={'/'} element={<Home />} />
     <Route path={'/app'} element={<App />}/>
     <Route path='/about' element={<About />}/>
+    <Route path='/dashboard' element={<Dashboard />}/>
     <Route path='/login' element={<Login />}/>
     <Route path='/register' element={<Register />}/>
 

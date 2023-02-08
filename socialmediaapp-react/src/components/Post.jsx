@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Button, Card } from "react-bootstrap";
-import foto from '../assets/images/golden-retriever-dog-21668976.jpg'
 import profilePhoto from '../assets/images/photo1.png'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCommenting, faGlobe, faGlobeAmericas, faShareSquare, faThumbsUp } from "@fortawesome/free-solid-svg-icons";
-import jwt_decode from "jwt-decode";
 import axios from "axios";
 
 

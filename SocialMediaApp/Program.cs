@@ -25,7 +25,7 @@ builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfi
     .AddEntityFrameworkStores<SocialNetworkDbContext>();
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-
+builder.Services.AddMvc().SetCompatibilityVersion(Microsoft.AspNetCore.Mvc.CompatibilityVersion.Version_2_1);
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { FormControl, FormLabel, FormGroup, Form, Container } from "react-bootstrap";
 import { ToastContainer, toast } from 'react-toastify';
 import { Footer } from "../components/Footer";
+import { Header } from "../components/Header";
 
 function Register() {
     const [loginData, setLoginData] = useState({});
@@ -30,21 +31,41 @@ function Register() {
         setOptionValue(e.target.value)
         
     }
-    const handleRegister = (event) =>{
-        event.preventDefault();
-        
-        
-        
-            axios.post("https://localhost:7080/api/authentication/register", loginData)
-            .then(res=>{
-                toast.success("Success!");
-                navigate('/login')
-            }).catch(err=>{
-                toast.error("Error! - "+ err.message);
-            })
-    }
-  return <>
 
+    const handleRegister = (event) => {
+        event.preventDefault();
+      
+        const formData = new FormData();
+        formData.append("ImageFile", loginData.ImageFile);
+        formData.append("first_name", loginData.first_name);
+        formData.append("last_name", loginData.last_name);
+        formData.append("UserName", loginData.UserName);
+        formData.append("Email", loginData.Email);
+        formData.append("Password", loginData.Password);
+        formData.append("ConfirmPassword", loginData.ConfirmPassword);
+        formData.append("birth_date", loginData.birth_date);
+        formData.append("active", loginData.active);
+        formData.append("date_updated", loginData.date_updated);
+        formData.append("country", loginData.country);
+        formData.append("city", loginData.city);
+        formData.append("state", loginData.state);
+        formData.append("gender", optionValue);
+        formData.append("activation_key", loginData.activation_key);
+      
+        axios
+          .post("https://localhost:7080/api/authentication/register", formData, {
+            headers: { "Content-Type": "multipart/form-data" }
+          })
+          .then((res) => {
+            toast.success("Success!");
+            navigate("/login");
+          })
+          .catch((err) => {
+            toast.error("Error! - " + err.message);
+          });
+      };
+  return <>
+    <Header />
      <Container style={{marginTop: '100px', marginBottom: '100px'}} >
             <div className="position-absolute" style={{right: '0px', top:'0px',zIndex:'-9999',width: '100%', height: '100%', backgroundColor: '#f3f2ef'}}></div>
         <div className="position-absolute" style={{left: '0px', top:'0px', transform: 'rotate(120deg)',zIndex:'-9999',width: '500px', height: '500px', backgroundColor: '#339D40'}}></div>
@@ -109,7 +130,7 @@ function Register() {
 
             <FormGroup style={{width: '48%', marginLeft: '4%'}}>
                 <FormLabel>Profile picture</FormLabel>
-                <FormControl type="file" name="profile_picture_url"  onChange={handleSubmit} />
+                <FormControl type="file" name="ImageFile"  onChange={handleSubmit} />
             </FormGroup>
 
             <FormGroup className="w-25 m-auto mt-5">
