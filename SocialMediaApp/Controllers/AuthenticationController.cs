@@ -6,7 +6,9 @@ using Microsoft.EntityFrameworkCore;
 using SocialMediaApp.Configuration;
 using SocialMediaApp.Models;
 using SocialMediaApp.ViewModels;
+using System.Net;
 using System.Security.Claims;
+using AuthorizeAttribute = SocialMediaApp.Configuration.AuthorizeAttribute;
 
 namespace SocialMediaApp.Controllers
 {
@@ -56,7 +58,6 @@ namespace SocialMediaApp.Controllers
         {
             if(ModelState.IsValid && model.Password == model.ConfirmPassword)
             {
-
                 User user = new User();
                 user.first_name = model.first_name;
                 user.last_name = model.last_name;
@@ -70,17 +71,18 @@ namespace SocialMediaApp.Controllers
                 user.city = model.city;
                 user.state = model.state;
                 user.gender = model.gender;
-                user.profile_picture_url = model.profile_picture_url;
                 user.Email = model.Email;
+                
 
 
 
 
                 /*var userAdded = _context.Users.Add(user);*/
-                
+
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
+                    await _userManager.AddToRoleAsync(user, "User");
                     var newUser = new RegisteredUserViewModel();
                     newUser.first_name = user.first_name;
                     newUser.last_name = user.last_name;
@@ -92,7 +94,6 @@ namespace SocialMediaApp.Controllers
                     newUser.Email = user.Email;
                     newUser.date_created = user.date_created;
                     newUser.gender = user.gender;
-                    newUser.profile_picture_url = user.profile_picture_url;
                     return Ok(newUser);
                 }
               /*      this._context.SaveChanges();
@@ -105,32 +106,41 @@ namespace SocialMediaApp.Controllers
 
             return BadRequest("Registration has failed!");
         }
-        [HttpGet]
-        [Route("Users")]
-        public async Task<IActionResult> GetUsers()
-        {
-            return Ok("You have this");
-        }
-        [HttpGet]
-        [Route("Users/{id}")]
-        public async Task<IActionResult> GetUserId(int id)
-        {
-            return Ok(new { userID = id });
-        }
+        /* [HttpGet]
+         [Route("Users")]
+         public async Task<IActionResult> GetUsers()
+         {
+             return Ok("You have this");
+         }
+         [HttpGet]
+         [Route("Users/{id}")]
+         public async Task<IActionResult> GetUserId(int id)
+         {
+             return Ok(new { userID = id });
+         }
 
-        [HttpGet]
-        [Route("Users/current")]
-        public async Task<IActionResult> getLoggedInUserId()
-        {
-            int id = Convert.ToInt32(HttpContext.User.FindFirstValue("userID"));
-            return Ok(new { userId = id });
-        }
+         [HttpGet]
+         [Route("Users/current")]
+         public async Task<IActionResult> getLoggedInUserId()
+         {
+             int id = Convert.ToInt32(HttpContext.User.FindFirstValue("User"));
+             return Ok(new { userId = id });
+         }*/
 
-        [Authorize]
-        public IActionResult GetPosts()
+        [AuthorizeAttribute]
+        public async Task<ActionResult<IEnumerable<Posts>>> GetPosts()
         {
-            var data = this._context.Posts.ToList();
-            return Ok(data);
+            return await _context.Posts.Include(post => post.User).ToListAsync();
         }
+        [HttpPost("user")]
+        public async Task<User> GetLoggedUser(LoggedUser email)
+        {
+            var user = await _userManager.FindByEmailAsync(email.email);
+            var userToFind = await _context.Users
+                .FirstOrDefaultAsync(m => m.Email == user.Email);
+            return userToFind;
+        }
+     
+
     }
 }

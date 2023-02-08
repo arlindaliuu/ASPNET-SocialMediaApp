@@ -6,8 +6,6 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import {Home} from './views/Home'
 import {About} from './views/About'
-import { Footer } from './components/Footer';
-import { Header } from './components/Header';
 import { Login } from './views/Login';
 import 'react-toastify/dist/ReactToastify.css';
 import Register from './views/Register';
@@ -16,7 +14,7 @@ import Register from './views/Register';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <BrowserRouter>
-  <Header />
+
   <Routes>
     
     <Route path={'/'} element={<Home />} />
@@ -26,7 +24,7 @@ root.render(
     <Route path='/register' element={<Register />}/>
 
   </Routes>
-  <Footer />
+
   </BrowserRouter>
   /* <React.StrictMode>
     <App />

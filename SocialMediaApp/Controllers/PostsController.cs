@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
@@ -26,7 +27,7 @@ namespace SocialMediaApp.Controllers
         }
 
         // GET: Posts
-        [Authorize(Roles = "Admin")]
+        /*[Authorize(Roles = "Admin")]*/
         public async Task<IActionResult> Index(string searchString,string sortOrder,int pg=1)
         {
             ViewBag.PriceSortParam = String.IsNullOrEmpty(sortOrder) ? "longtitude_desc" : "";
@@ -82,7 +83,7 @@ namespace SocialMediaApp.Controllers
         }
 
         // GET: Posts/Create
-        [Authorize(Roles = "admin")]
+        
         public IActionResult Create()
         {
             List<User> users = this._context.Users.ToList();
@@ -99,10 +100,13 @@ namespace SocialMediaApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(PostUserViewModel posts)
         {
-          
-                var student = this._context.Users.Find(posts.UserId);
+            if (posts.ImageFile == null || posts.ImageFile.Length == 0)
+            {
+                return Content("File not selected");
+            }
+            var student = this._context.Users.Find(posts.UserId);
                 var newPost = new Posts();
-
+           
                 newPost.caption = posts.caption;
                 newPost.latitude = posts.latitude;
                 newPost.longtitude = posts.longtitude;
@@ -111,25 +115,17 @@ namespace SocialMediaApp.Controllers
                 newPost.date_created = posts.date_created;
                 newPost.date_update = posts.date_update;
                 newPost.User = student;
-            
-                this._context.Posts.Add(newPost);
-                this._context.SaveChanges();
 
-            //Save image to wwwrot/image
-            /*              string wwwRootPath = _hostEnvironment.WebRootPath;
-                          string filename = Path.GetFileNameWithoutExtension(posts.ImageFile.FileName);
-                          string extension = Path.GetExtension(posts.ImageFile.FileName);
-                          filename = filename + DateTime.Now.ToString("ttmmssfff") + extension;
-                          string path = Path.Combine(wwwRootPath +"/Image/", filename);
-                          using(var fileStream = new FileStream(path, FileMode.Create))
-                          {
-                              await posts.ImageFile.CopyToAsync(fileStream);
-                          }*/
-            //Insert record
-            /*        _context.Add(newPost);
-                    await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
-                */
+            using (var memoryStream = new MemoryStream())
+            {
+                await posts.ImageFile.CopyToAsync(memoryStream);
+                newPost.ImageData = memoryStream.ToArray();
+            }
+
+            //Insert record    
+            this._context.Posts.Add(newPost);
+            await this._context.SaveChangesAsync();
+
             return RedirectToAction(nameof(Index));
         }
 
@@ -154,34 +150,24 @@ namespace SocialMediaApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,caption,latitude,longtitude,post_url,date_created,date_update")] Posts posts)
+        public async Task<IActionResult> Edit(int id, Posts posts)
         {
             if (id != posts.Id)
             {
                 return NotFound();
             }
-
-            if (ModelState.IsValid)
+            if (posts.ImageFile != null)
             {
-                try
+                using (var memoryStream = new MemoryStream())
                 {
+                    await posts.ImageFile.CopyToAsync(memoryStream);
+                    posts.ImageData = memoryStream.ToArray();
+                }
+            }
                     _context.Update(posts);
                     await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!PostsExists(posts.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
+
                 return RedirectToAction(nameof(Index));
-            }
-            return View(posts);
         }
 
         // GET: Posts/Delete/5

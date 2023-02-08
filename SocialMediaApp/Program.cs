@@ -2,7 +2,6 @@ using Microsoft.EntityFrameworkCore;
 using SocialMediaApp.Configuration;
 using Microsoft.AspNetCore.Identity;
 using SocialMediaApp.Models;
-
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
@@ -39,7 +38,7 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
+app.UseMiddleware<JwtMiddleware>();
 app.UseRouting();
 app.UseAuthentication();;
 app.UseCors();

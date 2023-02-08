@@ -15,7 +15,7 @@ export const Content= () =>{
         </div>
         <input style={{borderRadius: '150px'}} placeholder="Start a post" className="col-sm-10 my-2 border " type="text" name="" id="" />
         <label style={{textAlign: 'left'}} className="mt-2 display-1 fs-5" htmlFor="content">Write your content here!</label>
-        <input itemID="content" style={{ height: '50px'}} placeholder="Content" className="col-sm-12 my-2 border rounded" type="text" name="" id="" />
+        <textarea itemID="content" style={{ minHeight: '50px'}} placeholder="Content" className="col-sm-12 my-2 border rounded" type="text" name="" id="" />
 
     </div>
     <div className="d-flex mt-5 px-5">

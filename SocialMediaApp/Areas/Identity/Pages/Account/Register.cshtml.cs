@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using SocialMediaApp.Models;
 
@@ -130,7 +131,7 @@ namespace SocialMediaApp.Areas.Identity.Pages.Account
             public string ActivationKey { get; set; }
             [Required]
             [Display(Name = "ProfilePicture")]
-            public string ProfilePicture { get; set; }
+            public IFormFile ImageFile { get; set; }
 
         }
 
@@ -148,17 +149,22 @@ namespace SocialMediaApp.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 var user = CreateUser();
+
+                
                 user.first_name = Input.FistName;
                 user.last_name = Input.LastName;
-                
+                user.ImageFile = Input.ImageFile;
                 user.gender = Input.Gender;
                 user.city = Input.City;
                 user.state = Input.State;
                 user.birth_date = Input.Birthday;
                 user.active = Input.Active;
                 user.activation_key = Input.ActivationKey;
-                user.profile_picture_url = Input.ProfilePicture;
-
+                using (var memoryStream = new MemoryStream())
+                {
+                    await user.ImageFile.CopyToAsync(memoryStream);
+                    user.ImageData = memoryStream.ToArray();
+                }
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
                 var result = await _userManager.CreateAsync(user, Input.Password);

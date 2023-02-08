@@ -2,21 +2,26 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
 using SocialMediaApp.Configuration;
 using SocialMediaApp.Models;
+using SocialMediaApp.ViewModels;
 
 namespace SocialMediaApp.Controllers
 {
     public class LikesController : Controller
     {
         private readonly SocialNetworkDbContext _context;
+        private UserManager<User> _userManager { get; set; }
 
-        public LikesController(SocialNetworkDbContext context)
+        public LikesController(SocialNetworkDbContext context, UserManager<User> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Likes
@@ -46,7 +51,12 @@ namespace SocialMediaApp.Controllers
         // GET: Likes/Create
         public IActionResult Create()
         {
-            return View();
+            List<User> users = this._context.Users.ToList();
+            List<Posts> posts = _context.Posts.ToList();
+            LikePostUserViewModel model = new LikePostUserViewModel();
+            model.Users = users;
+            model.Posts = posts;
+            return View(model);
         }
 
         // POST: Likes/Create
@@ -54,15 +64,35 @@ namespace SocialMediaApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,date_created")] Likes likes)
+        public async Task<IActionResult> Create(LikePostUserViewModel likes)
         {
-            if (ModelState.IsValid)
-            {
-                _context.Add(likes);
-                await _context.SaveChangesAsync();
+            var userid = _userManager.GetUserId(HttpContext.User);
+            var student = this._context.Users.Find(userid);
+            var postId = await this._context.Posts.FirstOrDefaultAsync(a => a.Id == likes.PostId);
+            var newLikes = new Likes();
+            if(student != null) { 
+                List<Posts> postList = new List<Posts>();
+                postList.Add(postId);
+                newLikes.Posts = postList;
+                newLikes.date_created = likes.date_created;
+                newLikes.User = student;
+
+                this._context.Likes.Add(newLikes);
+
+                await this._context.SaveChangesAsync();
+
                 return RedirectToAction(nameof(Index));
             }
-            return View(likes);
+            return BadRequest();
+
+
+            /*            if (ModelState.IsValid)
+                        {
+                            _context.Add(likes);
+                            await _context.SaveChangesAsync();
+                            return RedirectToAction(nameof(Index));
+                        }
+                        return View(likes);*/
         }
 
         // GET: Likes/Edit/5

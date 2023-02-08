@@ -37,6 +37,21 @@ namespace SocialMediaApp.Migrations
                     b.ToTable("FollowingsUser");
                 });
 
+            modelBuilder.Entity("LikesPosts", b =>
+                {
+                    b.Property<int>("PostsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("likesID")
+                        .HasColumnType("int");
+
+                    b.HasKey("PostsId", "likesID");
+
+                    b.HasIndex("likesID");
+
+                    b.ToTable("LikesPosts");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -231,9 +246,6 @@ namespace SocialMediaApp.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
 
-                    b.Property<int?>("PostsId")
-                        .HasColumnType("int");
-
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
 
@@ -241,8 +253,6 @@ namespace SocialMediaApp.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("ID");
-
-                    b.HasIndex("PostsId");
 
                     b.HasIndex("UserId");
 
@@ -256,6 +266,9 @@ namespace SocialMediaApp.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<byte[]>("ImageData")
+                        .HasColumnType("varbinary(max)");
 
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
@@ -305,6 +318,9 @@ namespace SocialMediaApp.Migrations
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
+
+                    b.Property<byte[]>("ImageData")
+                        .HasColumnType("varbinary(max)");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -403,6 +419,21 @@ namespace SocialMediaApp.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("LikesPosts", b =>
+                {
+                    b.HasOne("SocialMediaApp.Models.Posts", null)
+                        .WithMany()
+                        .HasForeignKey("PostsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SocialMediaApp.Models.Likes", null)
+                        .WithMany()
+                        .HasForeignKey("likesID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -469,10 +500,6 @@ namespace SocialMediaApp.Migrations
 
             modelBuilder.Entity("SocialMediaApp.Models.Likes", b =>
                 {
-                    b.HasOne("SocialMediaApp.Models.Posts", null)
-                        .WithMany("likes")
-                        .HasForeignKey("PostsId");
-
                     b.HasOne("SocialMediaApp.Models.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
@@ -492,8 +519,6 @@ namespace SocialMediaApp.Migrations
             modelBuilder.Entity("SocialMediaApp.Models.Posts", b =>
                 {
                     b.Navigation("comments");
-
-                    b.Navigation("likes");
                 });
 #pragma warning restore 612, 618
         }

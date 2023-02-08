@@ -21,7 +21,7 @@ export const ProfileSideBar = () =>{
     //     })
     // })
     return <>
-    <Col className="col-sm-3">
+    <Col className="col-sm-3 d-none d-sm-block">
         <div style={{minHeight: '600px'}} className=" bg-white usercard border rounded">
             <div style={{height: '60px', backgroundColor: '#339D40'}} className="background" />
             <img style={{width: '80px', height: '80px', marginTop: '-50px'}} className="bg-white object-fit-fill border rounded-circle d-block mx-auto" src={profilePhoto} />

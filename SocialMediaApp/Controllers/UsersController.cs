@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using SocialMediaApp.Configuration;
 using SocialMediaApp.Models;
 using System.Security.Claims;
+using Microsoft.Extensions.Hosting;
 
 namespace SocialMediaApp.Controllers
 {
@@ -66,6 +67,11 @@ namespace SocialMediaApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,password,first_name,last_name,role,gender,city,state,country,profile_picture_url,birth_date,date_created,date_updated,active,activation_key")] UserViewModel user)
         {
+
+            if (user.ImageFile == null || user.ImageFile.Length == 0)
+            {
+                return Content("File not selected");
+            }
             if (ModelState.IsValid)
             {
                 
@@ -84,10 +90,16 @@ namespace SocialMediaApp.Controllers
                 newUser.date_updated = user.date_updated;
                 newUser.active = user.active;
                 newUser.activation_key = user.activation_key;
+                using (var memoryStream = new MemoryStream())
+                {
+                    await newUser.ImageFile.CopyToAsync(memoryStream);
+                    newUser.ImageData = memoryStream.ToArray();
+                }
                 _context.Add(newUser);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
             return View(user);
         }
 
@@ -118,11 +130,10 @@ namespace SocialMediaApp.Controllers
             {
                 //error
             }
-            
 
             var userToFind = await _context.Users
                 .FirstOrDefaultAsync(m => m.Id == id);
-            
+
             userToFind.activation_key = user.activation_key;
             userToFind.active = user.active;
             userToFind.city = user.city;
@@ -133,18 +144,24 @@ namespace SocialMediaApp.Controllers
             userToFind.first_name = user.first_name;
             userToFind.last_name = user.last_name;
             userToFind.gender = user.gender;
-            /*userToFind.role = user.role;*/
             userToFind.UserName = user.UserName;
             userToFind.state = user.state;
             userToFind.profile_picture_url = user.profile_picture_url;
 
+            if (user.ImageFile != null)
+            {
+                using (var memoryStream = new MemoryStream())
+                {
+                    await user.ImageFile.CopyToAsync(memoryStream);
+                    userToFind.ImageData = memoryStream.ToArray();
+                }
+            }
 
-            
+            _context.Update(userToFind);
             await _context.SaveChangesAsync();
 
-            return View();
+            return RedirectToAction(nameof(Index));
         }
-
         // GET: Users/Delete/5
         public async Task<IActionResult> Delete(string id)
         {

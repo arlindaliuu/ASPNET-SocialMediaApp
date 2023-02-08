@@ -11,7 +11,7 @@ import { UserFeed } from "./UserFeed";
 
 export const FeedSideBar = () =>{
     return <>
-    <Col className="col-sm-3">
+    <Col className="col-3 d-none d-sm-block">
             <div style={{minHeight: '600px'}} className="p-2 bg-white usercard border rounded">
                 <p className="display-1 fs-6 px-2">Add to your feed</p>
                 <UserFeed photo={profilePhoto2} name="Filan Fisteku" bio="This is Filan, Im 29yo, I work for Tesla company!"/>

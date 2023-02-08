@@ -1,5 +1,5 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
@@ -10,19 +10,24 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBell, faEnvelope, faHome, faHomeAlt } from "@fortawesome/free-solid-svg-icons";
 import { NavItem } from "react-bootstrap";
 
-export const Header = () =>{
-    return<>
-        {/* <header>
-    <li><Link to='/about'>About</Link></li>
-    <li><Link to='/'>Home</Link></li>
-    <li><Link to='/contact'>Contact</Link></li>
-    <li><Link to='/register'>Register</Link></li>
-    <li><Link to='/login'>Login</Link></li>
+export const Header = (props) =>{
+  const [authenticated, setauthenticated] = useState(null);
+  const navigate = useNavigate()
+  useEffect(() => {
+    const loggedInUser = localStorage.getItem("authenticated");
+        if (loggedInUser) {
+        setauthenticated(loggedInUser);
+    }
+}, []);
+const handleLogout = () =>{
+  localStorage.removeItem("authenticated");
 
-    </header> */}
+}
+    return<>
+
         <Navbar bg="light" expand="lg">
       <Container fluid>
-        <Navbar.Brand href="#">Social Media App</Navbar.Brand>
+        <Navbar.Brand style={{fontFamily: 'Georgia, serif'}} href="#">FOOT<span style={{color: '#339D40'}} className="fs-2">W</span>ORK</Navbar.Brand>
         <Navbar.Toggle aria-controls="navbarScroll" />
         <Navbar.Collapse id="navbarScroll">
           <Nav
@@ -42,7 +47,7 @@ export const Header = () =>{
           <div style={{width: '500px'}} className="d-flex justify-content-between">
           <Nav.Link><FontAwesomeIcon icon={faHome} /></Nav.Link>
 
-          <NavDropdown align="end" title={<FontAwesomeIcon icon={faBell} />} >
+          <NavDropdown align="end" title={<> <FontAwesomeIcon icon={faBell} /><span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-secondary">+99 <span className="visually-hidden">unread messages</span></span> </>} >
             <NavDropdown.Item href="#">Notification 1</NavDropdown.Item>
           </NavDropdown>
           <NavDropdown align="end" title={<FontAwesomeIcon icon={faEnvelope} />} >
@@ -50,10 +55,12 @@ export const Header = () =>{
             </NavDropdown>
           
 
-          <Nav.Link as={Link} to="/">Home</Nav.Link>
-          <Nav.Link as={Link} to="/login">Login</Nav.Link>
-          <Nav.Link as={Link} to="/register">Register</Nav.Link>
-          <NavDropdown align="end" title="Profile" id="navbarScrollingDropdown">
+          <Nav.Link as={Link} to="/">Welcome, {props.name}</Nav.Link>
+          {!authenticated && <> <Nav.Link as={Link} to="/login">Login</Nav.Link>
+          
+
+          <Nav.Link as={Link} to="/register">Register</Nav.Link> </>}
+          {authenticated && <NavDropdown align="end" title="Profile" id="navbarScrollingDropdown">
               <NavDropdown.Item href="#action3">Action</NavDropdown.Item>
               <NavDropdown.Item href="#action4">
                 Another action
@@ -62,10 +69,12 @@ export const Header = () =>{
               <NavDropdown.Item href="#action5">
                 Something else here
               </NavDropdown.Item>
-            </NavDropdown>
+              {authenticated && <NavDropdown.Item onClick={handleLogout} href="/login">
+                Logout
+              </NavDropdown.Item>}
+            </NavDropdown>}          
             </div>
           </Nav>
-          
         </Navbar.Collapse>
       </Container>
     </Navbar>

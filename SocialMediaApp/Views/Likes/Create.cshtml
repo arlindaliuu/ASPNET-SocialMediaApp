@@ -1,4 +1,4 @@
-﻿@model SocialMediaApp.Models.Likes
+﻿@model SocialMediaApp.ViewModels.LikePostUserViewModel
 
 @{
     ViewData["Title"] = "Create";
@@ -16,6 +16,24 @@
                 <label asp-for="date_created" class="control-label"></label>
                 <input asp-for="date_created" class="form-control" />
                 <span asp-validation-for="date_created" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label"></label>
+                <select asp-for="UserId" class="form-select form-control">
+                    @foreach (User user in Model.Users)
+                    {
+                        <option value="@user.Id">@user.first_name @user.last_name</option>
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <label class="control-label"></label>
+                <select asp-for="PostId" class="form-select form-control">
+                    @foreach (Posts posts in Model.Posts)
+                    {
+                        <option value="@posts.Id">@posts.caption </option>
+                    }
+                </select>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />

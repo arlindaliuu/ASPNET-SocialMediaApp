@@ -1,25 +1,34 @@
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import { FormControl, FormLabel, FormGroup, Form, Container } from "react-bootstrap";
 import { ToastContainer, toast } from 'react-toastify';
+import { Footer } from "../components/Footer";
 
 function Register() {
     const [loginData, setLoginData] = useState({});
+    const [optionValue, setOptionValue] = useState('');
+    const navigate = useNavigate();
     const handleSubmit = (e) =>{
         e.preventDefault();
 
         const {name, value} = e.target;
-        // console.log(name, value);
+         console.log(name, value);
 
 
         const tempData ={
             ...loginData,
-            [name]: value
+            [name]: value,
+            'gender': optionValue
         }
         setLoginData(tempData)
         console.log(tempData)
 
 
+    }
+    const handleSelect = (e) =>{
+        setOptionValue(e.target.value)
+        
     }
     const handleRegister = (event) =>{
         event.preventDefault();
@@ -29,72 +38,89 @@ function Register() {
             axios.post("https://localhost:7080/api/authentication/register", loginData)
             .then(res=>{
                 toast.success("Success!");
+                navigate('/login')
             }).catch(err=>{
-                toast.error("Error!");
+                toast.error("Error! - "+ err.message);
             })
     }
-  return (
+  return <>
 
-     <Container>
+     <Container style={{marginTop: '100px', marginBottom: '100px'}} >
+            <div className="position-absolute" style={{right: '0px', top:'0px',zIndex:'-9999',width: '100%', height: '100%', backgroundColor: '#f3f2ef'}}></div>
+        <div className="position-absolute" style={{left: '0px', top:'0px', transform: 'rotate(120deg)',zIndex:'-9999',width: '500px', height: '500px', backgroundColor: '#339D40'}}></div>
+        <div className="position-absolute" style={{right: '0px', top:'0px', transform: 'rotate(60deg)',zIndex:'-9999',width: '500px', height: '500px', backgroundColor: '#339D40'}}></div>
     <ToastContainer />
-        <Form onSubmit={handleRegister}>
+
+    <div style={{backdropFilter: 'blur(20px)'}} className="border p-sm-5 p-1 ">
+    <h1 style={{color: '#339D40'}} className="text-center">Register</h1>
+    
+        <Form className="d-flex flex-wrap" onSubmit={handleRegister}>
         
-            <FormGroup>
+            <FormGroup style={{width: '48%'}} >
                 <FormLabel>Email</FormLabel>
                 <FormControl name="email"  onChange={handleSubmit} />
             </FormGroup>
 
-            <FormGroup>
-                <FormLabel>Password</FormLabel>
-                <FormControl type="password" name="password" onChange={handleSubmit}/>
-            </FormGroup>
-
-            <FormGroup>
-                <FormLabel>Confirm Password</FormLabel>
-                <FormControl type="password" name="confirmpassword"  onChange={handleSubmit} />
-            </FormGroup>
-
-            <FormGroup>
+            <FormGroup style={{width: '48%', marginLeft: '4%'}}>
                 <FormLabel>Username</FormLabel>
                 <FormControl name="username"  onChange={handleSubmit} />
             </FormGroup>
 
-            <FormGroup>
+            <FormGroup style={{width: '48%'}}>
+                <FormLabel>Password</FormLabel>
+                <FormControl type="password" name="password" onChange={handleSubmit}/>
+            </FormGroup>
+
+            <FormGroup style={{width: '48%', marginLeft: '4%'}} >
+                <FormLabel>Confirm Password</FormLabel>
+                <FormControl type="password" name="confirmpassword"  onChange={handleSubmit} />
+            </FormGroup>
+
+
+            <FormGroup style={{width: '48%'}}>
                 <FormLabel>First Name</FormLabel>
                 <FormControl name="first_name"  onChange={handleSubmit} />
             </FormGroup>
 
-            <FormGroup>
+            <FormGroup style={{width: '48%', marginLeft: '4%'}}>
                 <FormLabel>Last Name</FormLabel>
                 <FormControl name="last_name"  onChange={handleSubmit} />
             </FormGroup>
 
-            <FormGroup>
+            <FormGroup style={{width: '48%'}}>
                 <FormLabel>Gender</FormLabel>
-                <FormControl name="gender"  onChange={handleSubmit} />
+                <select onChange={handleSelect} className="rounded border" style={{width: '100%', height: '55%'}} name="gender" id="">
+                    <option value="">--Please choose an option-</option>
+                    <option value="M">Mashkull</option>
+                    <option value="F">Femer</option>
+
+                </select>
             </FormGroup>
 
-            <FormGroup>
+            <FormGroup style={{width: '48%', marginLeft: '4%'}}>
                 <FormLabel>City</FormLabel>
                 <FormControl name="city"  onChange={handleSubmit} />
             </FormGroup>
 
-            <FormGroup>
+            <FormGroup style={{width: '48%'}}>
                 <FormLabel>Country</FormLabel>
                 <FormControl name="country"  onChange={handleSubmit} />
             </FormGroup>
 
-            <FormGroup>
+            <FormGroup style={{width: '48%', marginLeft: '4%'}}>
                 <FormLabel>Profile picture</FormLabel>
                 <FormControl type="file" name="profile_picture_url"  onChange={handleSubmit} />
             </FormGroup>
 
-            <FormGroup>
-                <FormControl type="submit" name="submit"  />
+            <FormGroup className="w-25 m-auto mt-5">
+                <FormControl style={{backgroundColor: '#339D40'}} className="text-white" type="submit" name="submit" value="Register"  />
             </FormGroup>
         </Form>
+        </div>
         </Container>
-  )
+        <Footer />
+        </>
+  
 }
 
 export default Register
